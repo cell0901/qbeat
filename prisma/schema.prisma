@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+ id String  @id @default(uuid()) 
+ email String  @unique
+ provider Provider 
+ streams Stream[] @relation("stream")// on the many relationship means every user will have bunch of Streams
+ upvotes Upvotes[]
+ added  Stream[] @relation("addedBy") // since addedby and user both relates to user we need to define whichs one is which using name
+}
+model Stream {
+id String @id @default(uuid())
+type  StreamType
+url String // spotify or youtube
+extractedId String // extracted is is when u go to youtube the url have id for every video
+active Boolean @default(true)// whether or not it is active or not
+upvotes Upvotes[] 
+addedById String // added by user who cant add more stream
+played Boolean @default(false) // using this to change the current stream since we cant delete the stream after setting current stream
+// because this of foriegn key constraint to currentStream
+playedTs DateTime?
+createAt DateTime @default(now())
+userId String
+title String @default("")
+smallImg String @default("")
+bigImg String @default("")
+currentStream CurrentStream?
+addedBy User @relation( fields: [addedById],references: [id], name: "addedBy") // added by user since we want only one stream
+user User @relation( fields: [userId], references: [id],name: "stream") // every stream is associated to single user
+}
+// the current stream which is played and will show to the end
+model CurrentStream{
+  userId String @id
+  streamId  String? @unique // optional since the user might have no active videos. and unique for one to one relationship with Stream
+  stream Stream? @relation(fields: [streamId], references: [id])
+}
+
+model Upvotes { // upvotes can be stored in redis because it will be faster and we dont need to data cz in the end its going to be removed after stream 
+//ends
+id String @id @default(uuid())
+userId String // every upvotes for a user id
+streamId String // and speicifc user upvoting on a stream
+user User @relation(fields: [userId], references: [id])
+stream Stream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+@@unique([userId, streamId]) // every entry in this unique for stream id and userID , single user cant upvote twice on same id 
+// this means u cant have two entrie in this table with same userId, StreamId tuple 
+}
+enum StreamType {
+  Spotify
+  Youtube
+}
+
+enum Provider {
+ Google  // later we cann github discord facebook
+}
