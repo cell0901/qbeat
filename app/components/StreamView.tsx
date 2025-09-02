@@ -172,7 +172,7 @@ const playNext = async () =>{
 
        {showToast && (
            <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[100] animate-in slide-in-from-top-2 duration-300">
-          <div className="bg-green-400 text-white px-4 py-2 rounded-lg shadow-lg border border-green-500">
+          <div className="bg-green-500 text-black px-4 py-2 rounded-lg shadow-lg border border-green-500">
             <span className="text-sm font-medium">Copied to clipboard</span>
           </div>
         </div>
@@ -193,12 +193,12 @@ const playNext = async () =>{
              <div className="flex flex-col items-end gap-2">
             <div className="flex items-center gap-2 text-zinc-300">
               <Users className="w-4 h-4" />
-              <span className="text-sm font-medium">1,247 listeners</span>
+              <span className="text-sm font-medium"></span>
             </div>
              <Button 
                 variant="outline" 
                 size="sm"
-                className="border-zinc-600 bg-green-500 "
+                className="border-white/10 bg-white/10 text-white hover:bg-white/20 hover:border-white/20 focus-visible:ring-2 focus-visible:ring-green-500/50"
               onClick={()=>{shareStream()}}
               >
                 <Share2 className="w-4 h-4 mr-2" />
@@ -249,7 +249,7 @@ const playNext = async () =>{
 
             {/* Currently Playing */}
             {/** getting current video will be from database since the upvotes of the queue might keep changing */}
-            <Card className="overflow-hidden bg-gradient-to-r from-zinc-900 to-zinc-800 border-zinc-700 h-fit">
+            <Card className="overflow-hidden bg-gradient-to-r from-zinc-900 to-zinc-900 border-zinc-700 h-fit">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Play className="w-5 h-5 text-green-500" />
@@ -286,7 +286,7 @@ const playNext = async () =>{
                     <div className="flex items-center gap-4 text-zinc-400">
                       <span className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
-                        Added by 
+                        {currentlyPlaying?.upvotes}  
                         {/* {currentlyPlaying.addedBy} */}
                       </span>
                     </div>

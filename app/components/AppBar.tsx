@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button"
 
 export const Appbar = () => {
     const session = useSession() // get the session of the logged in user
-    return <div className="bg-zinc-900/70 backdrop-blur-sm border-b border-zinc-800 sticky top-0 z-50">
+    return <div className="bg-zinc-900/70 backdrop-blur-sm border-b border-zinc-800 rounded-lg pb-2  sticky top-0 z-50">
         <div className="w-full px-6 py-2">
             <div className="flex justify-between items-center">
                 <div className="text-xl font-bold text-white">
-                    Musaas
+                   Qbeat 
                 </div>
                 <div>
                     {session?.data?.user && <Button 

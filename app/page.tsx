@@ -1,10 +1,14 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Play, Users, Music, Vote, ArrowRight } from "lucide-react"
 import { Appbar } from "./components/AppBar"
 import { Redirect } from "./components/Redirect"
+import { signIn, useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
 export default function HomePage() {
+    const session = useSession() 
   return (
     <div className="min-h-screen bg-black text-gray-200">
         {/* Header Section */}
@@ -18,16 +22,17 @@ export default function HomePage() {
             Fan-Driven Music Streaming
           </Badge>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-purple-400 to-blue-800 bg-clip-text text-transparent drop-shadow-lg">
-            MUSAAS
+           Qbeat 
           </h1>
           <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-            The first music streaming platform where creators and fans collaborate in real-time. Let your audience vote
+            Music streaming platform where creators and friends collaborate in real-time. Let your friends vote
             on what plays next during your streams.
           </p>
-          <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-black font-semibold px-8 py-4">
+          {!session?.data?.user && <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-black font-semibold px-8 py-4" onClick={()=>{signIn()}}>
             Join as Creator
             <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          </Button>}
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
 
           </div>
@@ -38,11 +43,11 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">How It Works</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">Stream live, let fans vote, create together</p>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">Stream live, let friends add, vote together</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <Card className="bg-gray-800 border-gray-700 hover:border-purple-500/50 transition-colors">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto ">
+            <Card className="bg-gray-800 border-gray-700 text-gray-300 hover:border-purple-500/50 transition-colors">
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Play className="h-8 w-8 text-blue-700" />
@@ -52,7 +57,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700 hover:border-purple-500/50 transition-colors">
+            <Card className="bg-gray-800 border-gray-700 text-gray-300 hover:border-purple-500/50 transition-colors">
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Vote className="h-8 w-8 text-purple-400" />
@@ -62,7 +67,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-800 border-gray-700 hover:border-purple-500/50 transition-colors">
+            <Card className="bg-gray-800 border-gray-700 text-gray-300 hover:border-purple-500/50 transition-colors">
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Users className="h-8 w-8 text-blue-700" />
@@ -80,20 +85,13 @@ export default function HomePage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Transform Music?</h2>
           <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join the revolution where fans and creators collaborate to create unforgettable musical experiences
+            Join the revolution where friends and creators collaborate to create unforgettable musical experiences
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-black font-semibold px-8 py-4">
-              Start Streaming
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-gray-200 px-8 py-4 bg-transparent"
-            >
-              Learn More
-            </Button>
+             {session?.data?.user && <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-black font-semibold px-8 py-4" onClick={()=>{redirect('/dashboard')}}>
+            Join as Creator
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>}
           </div>
         </div>
       </section>
