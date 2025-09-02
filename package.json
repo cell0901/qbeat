@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npx prisma migrate && npx prisma generate",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
+    
     "postgres": "docker run -e POSTGRES_PASSWORD=postgrespass -d -p 5432:5432 postgres"
   },
   "dependencies": {

@@ -5,14 +5,25 @@ import prismaClient from "@/app/lib/db/db"
 // import { GetVideoDetails } from "youtube-search-api";
 import { YT_REGEX } from "@/app/lib/utils";
 import { getServerSession } from "next-auth";
-import { Prisma } from "@prisma/client";
 // got this regex from npm is youtube url code
 const createStreamSchema = z.object({
     creatorId: z.string(),
     url: z.string() // the url we parse to check if it is spotify or youtube
 })
 const MAX_QUEUE_LEN =  50 
-    
+    import { Prisma } from '@prisma/client'
+
+// Then define your type like this:
+type StreamWithCountAndUpvotes = Prisma.StreamGetPayload<{
+  include: {
+    _count: {
+      select: {
+        upvotes: true
+      }
+    },
+    upvotes: true
+  }
+}>
 export async function POST(req: NextRequest) {
         const session = await getServerSession() // get the users deatils on the backend that is logged in
     //TODO // we can get rid of db call here if we get the id fromm the session (callback in authoptions)
@@ -160,7 +171,7 @@ export async function GET(req: NextRequest) {
         // destrucuring 
         // _count = { upvotes: 4  }
 // rest = { id: "123", title: "My Stream", url: "http://...", userId: "user1", type: "LIVE", ... } (everything except _count)
-       streams: streams.map(({_count, ...rest})=>({
+       streams: streams.map(({_count, ...rest}:StreamWithCountAndUpvotes)=>({
         ...rest,
         upvotes: _count.upvotes,
         haveUpvoted: rest.upvotes.length ? true : false // if upvotes then true else false if user have upvotes the lenght will not be 0 and user
