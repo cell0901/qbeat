@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Script
+        src="https://plausible.io/js/pa-3e6oPPYARvxLdHctxuQNe.js"
+        strategy="afterInteractive"
+      />
+
+      <Script id="plausible-init" strategy="afterInteractive">
+        {`
+            window.plausible = window.plausible || function() {
+              (window.plausible.q = window.plausible.q || []).push(arguments)
+            };
+            window.plausible.init = window.plausible.init || function(i) {
+              window.plausible.o = i || {};
+            };
+            window.plausible.init();
+          `}
+      </Script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
