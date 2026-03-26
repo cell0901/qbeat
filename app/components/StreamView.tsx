@@ -9,6 +9,9 @@ import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import { YT_REGEX } from "../lib/utils"
 import { Appbar } from "./AppBar"
 import YouTubePlayer from 'youtube-player';
+import { getUserId } from "../lib/actions/getUserId"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../lib/authOptions"
 interface Stream {
   id: string
   type: string
@@ -21,6 +24,7 @@ interface Stream {
   bigImg: string
   upvotes: number
   haveUpvoted: boolean
+  addedBy:string // the id of the user who added this fking stream
 }
 
 const REFERSH_MS = 10 * 1000 // every ten secs refresh
@@ -38,8 +42,8 @@ export default function StreamView({
   const [loading, setLoading] = useState(false)
   const [queue, setQueue] = useState<Stream[]>([])
   const [showToast, setShowToast] = useState(false)
- const videoPlayerRef = useRef<HTMLDivElement>(null)
-
+const videoPlayerRef = useRef<HTMLDivElement>(null)
+  
   async function refreshStreams() {
     const res = await fetch(`/api/streams/?creatorId=${creatorId}`, {
         credentials: "include"
@@ -359,8 +363,12 @@ const playNext = async () =>{
                               {stream.upvotes} 
                             </Button>
                             }
-                           
                             <div className="ml-auto">
+                              {/**on render this button on the page of user who added this stream */}
+                          <Button className="bg-red-500 hover:bg-red-600" onClick={()=>{
+                              // remove from queue
+
+                          }}>Remove From queue</Button> 
                             </div>
                           </div>
                         </div>
