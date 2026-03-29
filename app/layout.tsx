@@ -26,22 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Script
-        src="https://plausible.io/js/pa-3e6oPPYARvxLdHctxuQNe.js"
-        strategy="afterInteractive"
-      />
-
-      <Script id="plausible-init" strategy="afterInteractive">
-        {`
-            window.plausible = window.plausible || function() {
-              (window.plausible.q = window.plausible.q || []).push(arguments)
-            };
-            window.plausible.init = window.plausible.init || function(i) {
-              window.plausible.o = i || {};
-            };
-            window.plausible.init();
-          `}
-      </Script>
+      <head>
+        <Script
+          data-website-id="dfid_mq0O1YcegnO4epocT6Kxr"
+          data-domain="qbeat-three.vercel.app"
+          src="https://datafa.st/js/script.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
